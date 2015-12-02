@@ -1,0 +1,5 @@
+- char encoding
+- error handling
+    - country not found
+- tests
+- fuzzy search

@@ -10,7 +10,7 @@ import java.io.Reader;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.lunatech.assessment.util.Lang.getStream;
+import static com.lunatech.assessment.util.Lang.stream;
 
 /**
  * Created by Victor on 01/12/2015.
@@ -29,7 +29,7 @@ public abstract class BaseReader<T> {
     public List<T> read() throws IOException {
         Reader in = new FileReader(path);
         Iterable<CSVRecord> records = format.parse(in);
-        return getStream(records)
+        return stream(records)
                 .map(Record::new)
                 .map(this::read)
                 .collect(Collectors.toList());

@@ -35,7 +35,7 @@ public class Record implements Iterable<String> {
     }
 
     public Boolean getBoolean(String name) {
-        return getValue((value) -> value.equals("1"), name);
+        return getValue(value -> value.equals("1"), name);
     }
 
     private <T> T getValue(Function<String, T> convert, String name) {

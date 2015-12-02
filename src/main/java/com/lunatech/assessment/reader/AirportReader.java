@@ -14,6 +14,7 @@ public class AirportReader extends BaseReader<Airport> {
 
     protected Airport read(Record record) {
         Airport airport = new Airport();
+        airport.setId(record.get("id"));
         airport.setName(record.get("name"));
         airport.setCountryCode(record.get("iso_country"));
         return airport;
