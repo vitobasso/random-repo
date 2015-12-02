@@ -1,6 +1,7 @@
 
 package com.lunatech.assessment;
 
+import com.google.inject.Inject;
 import com.lunatech.assessment.model.Airport;
 import com.lunatech.assessment.model.Country;
 import com.lunatech.assessment.model.Runway;
@@ -8,7 +9,6 @@ import com.lunatech.assessment.service.AirportService;
 import com.lunatech.assessment.service.CountryService;
 import com.lunatech.assessment.service.RunwayService;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,16 +16,11 @@ import static com.lunatech.assessment.util.Lang.prompt;
 
 public class App {
 
-    private CountryService countryService = new CountryService();
-    private AirportService airportService = new AirportService();
-    private RunwayService runwayService = new RunwayService();
+    @Inject private CountryService countryService;
+    @Inject private AirportService airportService;
+    @Inject private RunwayService runwayService;
 
-    public static void main(String[] args) throws IOException {
-        App app = new App();
-        app.begin();
-    }
-
-    private void begin() {
+    public void begin() {
         String option = prompt("Choose:\n1) Query\n2) Reports\n");
 
         if ("1".equals(option)) {
