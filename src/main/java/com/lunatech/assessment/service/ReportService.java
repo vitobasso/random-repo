@@ -21,6 +21,11 @@ public class ReportService {
 
     @Inject private AirportService airportService;
 
+    public void printReport() {
+        Report report = createReport();
+        print(report);
+    }
+
     public Report createReport() {
         Map<Country, Long> airportCountByCountry = airportService.countByCountry();
         List<AirportCount> sortedEntries = sortByValue(airportCountByCountry);
@@ -38,6 +43,20 @@ public class ReportService {
                 .map(AirportCount::new)
                 .sorted(byCount)
                 .collect(toList());
+    }
+
+    public void print(Report report) {
+        System.out.println("\nCountries with the most airports:");
+        report.getCountriesWithMostAirports()
+                .forEach(this::printAirportCount);
+
+        System.out.println("\nCountries with the least airports:");
+        report.getCountriesWithLeastAirports()
+                .forEach(this::printAirportCount);
+    }
+
+    private void printAirportCount(AirportCount airportCount) {
+        System.out.printf("%30s %6d\n", airportCount.getCountry().getName(), airportCount.getCount());
     }
 
 }
