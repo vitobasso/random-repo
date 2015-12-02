@@ -19,4 +19,16 @@ public class Lang {
         return scanner.nextLine();
     }
 
+    public static String format(Object value, String format) {
+        return value != null ? String.format(format, value) : "";
+    }
+
+    public static String format(String value) {
+        return format(value, "%s");
+    }
+
+    public static String format(Integer value) {
+        return format(value, "%d");
+    }
+
 }
