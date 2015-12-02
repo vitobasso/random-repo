@@ -7,12 +7,13 @@ import com.lunatech.assessment.reader.RunwayReader;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 /**
  * Created by Victor on 02/12/2015.
  */
-public class RunwayService extends BaseService<Runway> {
+public class RunwayService extends EntityService<Runway> {
 
     public RunwayService() {
         super(new RunwayReader());
@@ -21,7 +22,7 @@ public class RunwayService extends BaseService<Runway> {
     public Map<String, List<Runway>> filterAndGroupByAirport(List<Airport> airports) {
         return listAll().stream()
                 .filter(matchesAirports(airports))
-                .collect(Collectors.groupingBy(Runway::getAirportRef));
+                .collect(groupingBy(Runway::getAirportRef));
     }
 
     private Predicate<Runway> matchesAirports(List<Airport> airports) {

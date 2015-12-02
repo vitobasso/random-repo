@@ -6,7 +6,7 @@ import com.lunatech.assessment.util.Record;
 /**
  * Created by Victor on 01/12/2015.
  */
-public class RunwayReader extends BaseReader<Runway> {
+public class RunwayReader extends EntityReader<Runway> {
 
     public RunwayReader() {
         super("runways.csv");

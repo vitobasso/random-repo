@@ -6,7 +6,7 @@ import com.lunatech.assessment.util.Record;
 /**
  * Created by Victor on 01/12/2015.
  */
-public class AirportReader extends BaseReader<Airport> {
+public class AirportReader extends EntityReader<Airport> {
 
     public AirportReader() {
         super("airports.csv");

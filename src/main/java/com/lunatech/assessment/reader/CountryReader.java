@@ -6,7 +6,7 @@ import com.lunatech.assessment.util.Record;
 /**
  * Created by Victor on 01/12/2015.
  */
-public class CountryReader extends BaseReader<Country> {
+public class CountryReader extends EntityReader<Country> {
 
     public CountryReader() {
         super("countries.csv");

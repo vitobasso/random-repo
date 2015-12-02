@@ -3,12 +3,16 @@ package com.lunatech.assessment.service;
 import com.lunatech.assessment.model.Country;
 import com.lunatech.assessment.reader.CountryReader;
 
+import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toMap;
 
 /**
  * Created by Victor on 02/12/2015.
  */
-public class CountryService extends BaseService<Country> {
+public class CountryService extends EntityService<Country> {
 
     public CountryService() {
         super(new CountryReader());
@@ -22,4 +26,19 @@ public class CountryService extends BaseService<Country> {
                 .findFirst()
                 .orElseGet(null);
     }
+
+    public <T> Map<Country, T> convertToMapByCountry(Map<String, T> mapByCode) {
+        Map<String, Country> countriesByCode = getCountriesByCode();
+        return mapByCode.entrySet().stream()
+                .collect(toMap(
+                        entry -> countriesByCode.get(entry.getKey()),
+                        Map.Entry::getValue
+                ));
+    }
+
+    private Map<String, Country> getCountriesByCode() {
+        return listAll().stream()
+                .collect(Collectors.toMap(Country::getCode, x -> x));
+    }
+
 }

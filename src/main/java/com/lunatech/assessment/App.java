@@ -5,8 +5,10 @@ import com.google.inject.Inject;
 import com.lunatech.assessment.model.Airport;
 import com.lunatech.assessment.model.Country;
 import com.lunatech.assessment.model.Runway;
+import com.lunatech.assessment.model.report.Report;
 import com.lunatech.assessment.service.AirportService;
 import com.lunatech.assessment.service.CountryService;
+import com.lunatech.assessment.service.ReportService;
 import com.lunatech.assessment.service.RunwayService;
 
 import java.util.List;
@@ -19,6 +21,7 @@ public class App {
     @Inject private CountryService countryService;
     @Inject private AirportService airportService;
     @Inject private RunwayService runwayService;
+    @Inject private ReportService reportService;
 
     public void begin() {
         String option = prompt("Choose:\n1) Query\n2) Reports\n");
@@ -26,7 +29,7 @@ public class App {
         if ("1".equals(option)) {
             query();
         } else if ("2".equals(option)) {
-            System.out.println("Invalid option.");
+            report();
         } else {
             System.out.println("Invalid option.");
         }
@@ -40,6 +43,11 @@ public class App {
         List<Airport> airports = airportService.findByCountry(country);
         Map<String, List<Runway>> runways = runwayService.filterAndGroupByAirport(airports);
         printAirportTable(airports, runways);
+    }
+
+    public void report() {
+        Report report = reportService.createReport();
+
     }
 
     private void printAirportTable(List<Airport> airports, Map<String, List<Runway>> runways) {
@@ -67,5 +75,8 @@ public class App {
                 runway.getLatitude(), runway.getLongitude());
     }
 
+    private void printAirportCount(Country country, Long count) {
+        System.out.printf("%s %d\n", country.getName(), count);
+    }
 
 }

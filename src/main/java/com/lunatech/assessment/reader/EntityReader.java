@@ -15,14 +15,14 @@ import static com.lunatech.assessment.util.Lang.stream;
 /**
  * Created by Victor on 01/12/2015.
  */
-public abstract class BaseReader<T> {
+public abstract class EntityReader<T> {
 
     private static final CSVFormat format = CSVFormat.EXCEL.withHeader();
     public static final String ROOT_PATH = "src/main/resources/";
 
     private final String path;
 
-    public BaseReader(String fileName) {
+    public EntityReader(String fileName) {
         this.path = ROOT_PATH + fileName;
     }
 
