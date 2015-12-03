@@ -9,6 +9,7 @@ import com.lunatech.assessment.model.Runway;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.lunatech.assessment.util.Lang.format;
 import static com.lunatech.assessment.util.Lang.prompt;
@@ -26,14 +27,14 @@ public class QueryService {
     private static final DecimalFormat COORDINATE_FORMAT = new DecimalFormat("###.#");
 
     public void query() {
-        Country country = findCountryForUserInput();
-        gatherDataAndShow(country);
+        Optional<Country> country = findCountryForUserInput();
+        country.ifPresent(this::gatherDataAndShow);
     }
 
-    private Country findCountryForUserInput() {
+    private Optional<Country> findCountryForUserInput() {
         String input = prompt("\nCountry?\n");
-        Country country = countryService.findMatch(input);
-        printCountry(country);
+        Optional<Country> country = countryService.findMatch(input);
+        printFeedbackForFind(input, country.orElse(null));
         return country;
     }
 
@@ -41,6 +42,14 @@ public class QueryService {
         List<Airport> airports = airportService.findByCountry(country);
         Map<String, List<Runway>> runways = runwayService.groupByAirport(airports);
         printAirportTable(airports, runways);
+    }
+
+    private void printFeedbackForFind(String input, Country country) {
+        if (country != null) {
+            System.out.printf("\nFound: %s (%s)\n", country.getName(), country.getCode());
+        } else {
+            System.out.printf("Couldn't find a country matching \"%s\"\n", input);
+        }
     }
 
     private void printAirportTable(List<Airport> airports, Map<String, List<Runway>> runways) {
@@ -68,10 +77,6 @@ public class QueryService {
     private void printRunwayHeader() {
         System.out.println("Runways:");
         System.out.printf(RUNWAY_ROW_FORMAT, "Length", "Width", "Surface", "Latitude", "Longitude");
-    }
-
-    private void printCountry(Country country) {
-        System.out.printf("\nMatch found: %s (%s)\n", country.getName(), country.getCode());
     }
 
     private void printAirport(Airport airport) {

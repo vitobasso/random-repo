@@ -5,6 +5,7 @@ import com.lunatech.assessment.model.Country;
 import com.lunatech.assessment.reader.CountryReader;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -20,13 +21,12 @@ public class CountryService extends EntityService<Country> {
         super(reader);
     }
 
-    public Country findMatch(String searchTerm) {
+    public Optional<Country> findMatch(String searchTerm) {
         Predicate<Country> matchesSearch = country -> country.getCode().equalsIgnoreCase(searchTerm)
                                         || country.getName().equalsIgnoreCase(searchTerm);
         return listAll().stream()
                 .filter(matchesSearch)
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 
     public <T> Map<Country, T> convertToMapByCountry(Map<String, T> mapByCode) {
