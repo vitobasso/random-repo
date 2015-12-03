@@ -1,11 +1,13 @@
 package com.lunatech.assessment.reader;
 
+import com.google.common.base.Charsets;
 import com.lunatech.assessment.util.Record;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
 
@@ -27,7 +29,7 @@ public abstract class EntityReader<T> {
     }
 
     public List<T> read() throws IOException {
-        Reader in = new FileReader(path);
+        Reader in = new InputStreamReader(new FileInputStream(path), Charsets.UTF_8);
         Iterable<CSVRecord> records = format.parse(in);
         return stream(records)
                 .map(Record::new)
