@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CountryServiceTest {
+public class FindCountryTest {
 
     @InjectMocks
     private CountryService service;
@@ -50,37 +50,37 @@ public class CountryServiceTest {
 
     @Test
     public void testFindByCode() throws Exception {
-        Optional<Country> country = service.findMatch("BR");
+        Optional<Country> country = service.find("BR");
         assertEquals(country1, country.get());
     }
 
     @Test
     public void testFindByExactName() throws Exception {
-        Optional<Country> country = service.findMatch("Brazil");
+        Optional<Country> country = service.find("Brazil");
         assertEquals(country1, country.get());
     }
 
     @Test
     public void testFindByLowerCaseName() throws Exception {
-        Optional<Country> country = service.findMatch("brazil");
+        Optional<Country> country = service.find("brazil");
         assertEquals(country1, country.get());
     }
 
     @Test
     public void testFindNL() throws Exception {
-        Optional<Country> country = service.findMatch("NL");
+        Optional<Country> country = service.find("NL");
         assertEquals(country2, country.get());
     }
 
     @Test
     public void testFindNetherlands() throws Exception {
-        Optional<Country> country = service.findMatch("netherlands");
+        Optional<Country> country = service.find("netherlands");
         assertEquals(country2, country.get());
     }
 
     @Test
     public void testCantFind() throws Exception {
-        Optional<Country> country = service.findMatch("US");
+        Optional<Country> country = service.find("US");
         assertFalse(country.isPresent());
     }
 

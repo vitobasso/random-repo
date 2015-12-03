@@ -33,7 +33,7 @@ public class QueryService {
 
     private Optional<Country> findCountryForUserInput() {
         String input = prompt("\nCountry?\n");
-        Optional<Country> country = countryService.findMatch(input);
+        Optional<Country> country = countryService.findFuzzy(input);
         printFeedbackForFind(input, country.orElse(null));
         return country;
     }
