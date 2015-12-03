@@ -1,42 +1,29 @@
 package com.lunatech.assessment.model.report;
 
-import com.lunatech.assessment.model.Country;
-
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Victor on 02/12/2015.
  */
 public class Report {
 
-    private List<AirportCount> countriesWithMostAirports;
-    private List<AirportCount> countriesWithLeastAirports;
-    private Map<Country, List<String>> typesOfRunways;
+    private List<ReportEntry> topCoutries;
+    private List<ReportEntry> bottomCountries;
 
-    public List<AirportCount> getCountriesWithMostAirports() {
-        return countriesWithMostAirports;
+    public List<ReportEntry> getTopCoutries() {
+        return topCoutries;
     }
 
-    public void setCountriesWithMostAirports(List<AirportCount> countriesWithMostAirports) {
-        this.countriesWithMostAirports = countriesWithMostAirports;
+    public void setTopCoutries(List<ReportEntry> topCoutries) {
+        this.topCoutries = topCoutries;
     }
 
-    public List<AirportCount> getCountriesWithLeastAirports() {
-        return countriesWithLeastAirports;
+    public List<ReportEntry> getBottomCountries() {
+        return bottomCountries;
     }
 
-    public void setCountriesWithLeastAirports(List<AirportCount> countriesWithLeastAirports) {
-        this.countriesWithLeastAirports = countriesWithLeastAirports;
+    public void setBottomCountries(List<ReportEntry> bottomCountries) {
+        this.bottomCountries = bottomCountries;
     }
-
-    public Map<Country, List<String>> getTypesOfRunways() {
-        return typesOfRunways;
-    }
-
-    public void setTypesOfRunways(Map<Country, List<String>> typesOfRunways) {
-        this.typesOfRunways = typesOfRunways;
-    }
-
 
 }

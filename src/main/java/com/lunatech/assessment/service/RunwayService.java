@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by Victor on 02/12/2015.
@@ -21,8 +22,8 @@ public class RunwayService extends EntityService<Runway> {
         super(reader);
     }
 
-    public Map<String, List<Runway>> filterAndGroupByAirport(List<Airport> airports) {
-        return listAll().stream()
+    public Map<String, List<Runway>> groupByAirport(List<Airport> airports) {
+        return listAll().parallelStream()
                 .filter(matchesAirports(airports))
                 .collect(groupingBy(Runway::getAirportRef));
     }
@@ -35,6 +36,22 @@ public class RunwayService extends EntityService<Runway> {
 
     private Predicate<Airport> hasRunway(Runway runway) {
         return airport -> airport.getId().equals(runway.getAirportRef());
+    }
+
+    public List<Runway> findByAirport(Airport airport) {
+        return listAll().parallelStream()
+                .filter(belongsToAirport(airport))
+                .collect(toList());
+    }
+
+    private Predicate<Runway> belongsToAirport(Airport airport) {
+        return runway -> airport.getId().equals(runway.getAirportRef());
+    }
+
+    public List<String> getRunwaySurfaceTypes(Airport airport) {
+        return findByAirport(airport).stream()
+                .map(Runway::getSurface)
+                .collect(toList());
     }
 
 }

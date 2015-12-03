@@ -24,37 +24,50 @@ public class QueryService {
 
     private static final String RUNWAY_ROW_FORMAT = "%8s %8s %10s %13s %13s\n";
     private static final DecimalFormat COORDINATE_FORMAT = new DecimalFormat("###.#");
-    private static final int HEADER_WIDTH = 56;
 
     public void query() {
+        Country country = findCountryForUserInput();
+        gatherDataAndShow(country);
+    }
+
+    private Country findCountryForUserInput() {
         String input = prompt("\nCountry?\n");
         Country country = countryService.findMatch(input);
         printCountry(country);
+        return country;
+    }
 
+    private void gatherDataAndShow(Country country) {
         List<Airport> airports = airportService.findByCountry(country);
-        Map<String, List<Runway>> runways = runwayService.filterAndGroupByAirport(airports);
+        Map<String, List<Runway>> runways = runwayService.groupByAirport(airports);
         printAirportTable(airports, runways);
     }
 
     private void printAirportTable(List<Airport> airports, Map<String, List<Runway>> runways) {
-        printAirportTableHeader();
+        printMainHeader();
         for (Airport airport : airports) {
             System.out.println();
             printAirport(airport);
-
-            List<Runway> runwaysInAirport = runways.get(airport.getId());
-            if (runwaysInAirport != null) {
-                System.out.println("Runways:");
-                System.out.printf(RUNWAY_ROW_FORMAT, "Length", "Width", "Surface", "Latitude", "Longitude");
-                runwaysInAirport.forEach(this::printRunway);
-            }
+            printRunways(runways.get(airport.getId()));
         }
     }
 
-    private void printAirportTableHeader() {
+    private void printRunways(List<Runway> runwaysInAirport) {
+        if (runwaysInAirport != null) {
+            printRunwayHeader();
+            runwaysInAirport.forEach(this::printRunway);
+        }
+    }
+
+    private void printMainHeader() {
         System.out.println();
         System.out.println("Airports:");
-        System.out.println(Strings.repeat("-", HEADER_WIDTH));
+        System.out.println(Strings.repeat("-", 56));
+    }
+
+    private void printRunwayHeader() {
+        System.out.println("Runways:");
+        System.out.printf(RUNWAY_ROW_FORMAT, "Length", "Width", "Surface", "Latitude", "Longitude");
     }
 
     private void printCountry(Country country) {
