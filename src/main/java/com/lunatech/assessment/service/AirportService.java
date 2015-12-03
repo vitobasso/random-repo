@@ -18,8 +18,9 @@ public class AirportService extends EntityService<Airport> {
 
     @Inject private CountryService countryService;
 
-    public AirportService() {
-        super(new AirportReader());
+    @Inject
+    public AirportService(AirportReader reader) {
+        super(reader);
     }
 
     public List<Airport> findByCountry(Country country) {

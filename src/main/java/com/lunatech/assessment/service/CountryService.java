@@ -1,5 +1,6 @@
 package com.lunatech.assessment.service;
 
+import com.google.inject.Inject;
 import com.lunatech.assessment.model.Country;
 import com.lunatech.assessment.reader.CountryReader;
 
@@ -14,8 +15,9 @@ import static java.util.stream.Collectors.toMap;
  */
 public class CountryService extends EntityService<Country> {
 
-    public CountryService() {
-        super(new CountryReader());
+    @Inject
+    public CountryService(CountryReader reader) {
+        super(reader);
     }
 
     public Country findMatch(String searchTerm) {
@@ -24,7 +26,7 @@ public class CountryService extends EntityService<Country> {
         return listAll().stream()
                 .filter(matchesSearch)
                 .findFirst()
-                .orElseGet(null);
+                .orElse(null);
     }
 
     public <T> Map<Country, T> convertToMapByCountry(Map<String, T> mapByCode) {

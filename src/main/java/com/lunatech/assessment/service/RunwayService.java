@@ -1,5 +1,6 @@
 package com.lunatech.assessment.service;
 
+import com.google.inject.Inject;
 import com.lunatech.assessment.model.Airport;
 import com.lunatech.assessment.model.Runway;
 import com.lunatech.assessment.reader.RunwayReader;
@@ -15,8 +16,9 @@ import static java.util.stream.Collectors.groupingBy;
  */
 public class RunwayService extends EntityService<Runway> {
 
-    public RunwayService() {
-        super(new RunwayReader());
+    @Inject
+    public RunwayService(RunwayReader reader) {
+        super(reader);
     }
 
     public Map<String, List<Runway>> filterAndGroupByAirport(List<Airport> airports) {

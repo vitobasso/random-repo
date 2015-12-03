@@ -8,9 +8,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.lunatech.assessment.util.Lang.stream;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by Victor on 01/12/2015.
@@ -32,7 +32,7 @@ public abstract class EntityReader<T> {
         return stream(records)
                 .map(Record::new)
                 .map(this::read)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     protected abstract T read(Record strings);

@@ -7,23 +7,23 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-/**
- * Created by Victor on 01/12/2015.
- */
 public class Record implements Iterable<String> {
 
-    private CSVRecord record;
+    private CSVRecord csvRecord;
 
-    public Record(CSVRecord record) {
-        this.record = record;
+    public Record() {
+    }
+
+    public Record(CSVRecord csvRecord) {
+        this.csvRecord = csvRecord;
     }
 
     public String get(String name) {
-        return record.get(name);
+        return csvRecord.get(name);
     }
 
     public String getString(String name) {
-        return record.get(name);
+        return get(name);
     }
 
     public Double getDouble(String name) {
@@ -40,7 +40,7 @@ public class Record implements Iterable<String> {
 
     private <T> T getValue(Function<String, T> convert, String name) {
         try {
-            String rawValue = record.get(name);
+            String rawValue = get(name);
             if (rawValue != null && !rawValue.isEmpty()) {
                 return convert.apply(rawValue);
             } else {
@@ -54,17 +54,17 @@ public class Record implements Iterable<String> {
 
     @Override
     public Iterator<String> iterator() {
-        return record.iterator();
+        return csvRecord.iterator();
     }
 
     @Override
     public void forEach(Consumer<? super String> action) {
-        record.forEach(action);
+        csvRecord.forEach(action);
     }
 
     @Override
     public Spliterator<String> spliterator() {
-        return record.spliterator();
+        return csvRecord.spliterator();
     }
 
 }
