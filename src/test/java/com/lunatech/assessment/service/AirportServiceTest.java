@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.lunatech.assessment.model.Airport;
 import com.lunatech.assessment.model.Country;
 import com.lunatech.assessment.reader.AirportReader;
+import com.lunatech.assessment.service.entity.AirportService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

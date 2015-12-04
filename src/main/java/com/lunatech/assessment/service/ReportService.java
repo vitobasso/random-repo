@@ -7,6 +7,8 @@ import com.lunatech.assessment.model.Country;
 import com.lunatech.assessment.model.report.CountryReportEntry;
 import com.lunatech.assessment.model.report.LatitudeReportEntry;
 import com.lunatech.assessment.model.report.Report;
+import com.lunatech.assessment.service.entity.AirportService;
+import com.lunatech.assessment.service.entity.RunwayService;
 
 import java.util.List;
 import java.util.Map;

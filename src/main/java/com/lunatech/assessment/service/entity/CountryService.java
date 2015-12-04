@@ -1,4 +1,4 @@
-package com.lunatech.assessment.service;
+package com.lunatech.assessment.service.entity;
 
 import com.google.inject.Inject;
 import com.lunatech.assessment.model.Country;

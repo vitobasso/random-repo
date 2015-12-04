@@ -5,6 +5,9 @@ import com.google.inject.Inject;
 import com.lunatech.assessment.model.Airport;
 import com.lunatech.assessment.model.Country;
 import com.lunatech.assessment.model.Runway;
+import com.lunatech.assessment.service.entity.AirportService;
+import com.lunatech.assessment.service.entity.CountryService;
+import com.lunatech.assessment.service.entity.RunwayService;
 
 import java.util.List;
 import java.util.Map;
