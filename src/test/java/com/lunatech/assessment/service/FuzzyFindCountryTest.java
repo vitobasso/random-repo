@@ -13,6 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 import java.util.Optional;
 
+import static com.lunatech.assessment.TestEntityFactory.createCountry;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
@@ -30,17 +31,9 @@ public class FuzzyFindCountryTest {
 
     @Before
     public void setUp() throws Exception {
-        country1 = new Country();
-        country1.setName("Brazil");
-        country1.setCode("BR");
-
-        country2 = new Country();
-        country2.setName("Netherlands");
-        country2.setCode("NL");
-
-        country3 = new Country();
-        country3.setName("Zimbabwe");
-        country3.setCode("ZW");
+        country1 = createCountry("Brazil", "BR");
+        country2 = createCountry("Netherlands", "NL");
+        country3 = createCountry("Zimbabwe", "ZW");
 
         List<Country> countryList = Lists.newArrayList(country1, country2, country3);
         when(reader.read()).thenReturn(countryList);

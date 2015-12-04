@@ -13,6 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 import java.util.Optional;
 
+import static com.lunatech.assessment.TestEntityFactory.createCountry;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -29,13 +30,8 @@ public class FindCountryTest {
 
     @Before
     public void setUp() throws Exception {
-        country1 = new Country();
-        country1.setName("Brazil");
-        country1.setCode("BR");
-
-        country2 = new Country();
-        country2.setName("Netherlands");
-        country2.setCode("NL");
+        country1 = createCountry("Brazil", "BR");
+        country2 = createCountry("Netherlands", "NL");
 
         List<Country> countryList = Lists.newArrayList(country1, country2);
         when(reader.read()).thenReturn(countryList);

@@ -14,6 +14,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 import java.util.Map;
 
+import static com.lunatech.assessment.TestEntityFactory.createAirport;
+import static com.lunatech.assessment.TestEntityFactory.createCountry;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -31,25 +33,11 @@ public class AirportServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        brazil = new Country();
-        brazil.setName("Brazil");
-        brazil.setCode("BR");
-
-        netherlands = new Country();
-        netherlands.setName("Netherlands");
-        netherlands.setCode("NL");
-
-        pintoMartins = new Airport();
-        pintoMartins.setName("Pinto Martins");
-        pintoMartins.setCountryCode("BR");
-
-        schiphol = new Airport();
-        schiphol.setName("Schiphol");
-        schiphol.setCountryCode("NL");
-
-        guarulhos = new Airport();
-        guarulhos.setName("Guarulhos");
-        guarulhos.setCountryCode("BR");
+        brazil = createCountry("Brazil", "BR");
+        netherlands = createCountry("Netherlands", "NL");
+        pintoMartins = createAirport("Pinto Martins", "BR");
+        schiphol = createAirport("Schiphol", "NL");
+        guarulhos = createAirport("Guarulhos", "BR");
 
         List<Airport> airportList = Lists.newArrayList(pintoMartins, schiphol, guarulhos);
         when(reader.read()).thenReturn(airportList);
