@@ -3,15 +3,13 @@ package com.lunatech.assessment.service;
 import com.google.inject.Inject;
 import com.lunatech.assessment.model.Country;
 import com.lunatech.assessment.reader.CountryReader;
-import org.apache.commons.lang3.StringUtils;
+import com.lunatech.assessment.util.FuzzyFinder;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
 /**
@@ -19,11 +17,12 @@ import static java.util.stream.Collectors.toMap;
  */
 public class CountryService extends EntityService<Country> {
 
-
+    private FuzzyFinder<Country> fuzzyFinder;
 
     @Inject
     public CountryService(CountryReader reader) {
         super(reader);
+        fuzzyFinder = new FuzzyFinder<>(this::listAll, Country::getCode, Country::getName);
     }
 
     public Optional<Country> find(String searchTerm) {
@@ -35,20 +34,7 @@ public class CountryService extends EntityService<Country> {
     }
 
     public Optional<Country> findFuzzy(String searchTerm) {
-        final int FUZZY_SEARCH_TRESHOLD = 5;
-        Map<Country, Integer> similarityScores = listAll().stream()
-                .collect(toMap(identity(), country -> getSimilarityScore(searchTerm, country)));
-        Optional<Map.Entry<Country, Integer>> bestMatch = similarityScores.entrySet().stream()
-                .max((left, right) -> left.getValue().compareTo(right.getValue()));
-        return bestMatch
-                .filter(entry -> entry.getValue() >= FUZZY_SEARCH_TRESHOLD)
-                .map(Map.Entry::getKey);
-    }
-
-    private Integer getSimilarityScore(String searchTerm, Country country) {
-        int nameSimilarity = StringUtils.getFuzzyDistance(searchTerm, country.getName(), Locale.ENGLISH);
-        int codeSimilarity = searchTerm.equalsIgnoreCase(country.getCode()) ? Integer.MAX_VALUE : 0;
-        return Math.max(nameSimilarity, codeSimilarity);
+        return fuzzyFinder.find(searchTerm);
     }
 
     public <T> Map<Country, T> convertToMapByCountry(Map<String, T> mapByCode) {
