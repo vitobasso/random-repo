@@ -10,11 +10,7 @@ public class Runway {
     private Integer length;
     private Integer width;
     private String surface;
-    private String latitudeCircle;
-    private Boolean lighted;
-    private Boolean closed;
-    private Double latitude;
-    private Double longitude;
+    private String latitude;
 
     public String getId() {
         return id;
@@ -56,43 +52,12 @@ public class Runway {
         this.surface = surface;
     }
 
-    public String getLatitudeCircle() {
-        return latitudeCircle;
-    }
-
-    public void setLatitudeCircle(String latitudeCircle) {
-        this.latitudeCircle = latitudeCircle;
-    }
-
-    public Boolean getLighted() {
-        return lighted;
-    }
-
-    public void setLighted(Boolean lighted) {
-        this.lighted = lighted;
-    }
-
-    public Boolean getClosed() {
-        return closed;
-    }
-
-    public void setClosed(Boolean closed) {
-        this.closed = closed;
-    }
-
-    public Double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Double latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
 }

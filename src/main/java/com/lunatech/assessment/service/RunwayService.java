@@ -55,7 +55,7 @@ public class RunwayService extends EntityService<Runway> {
 
     public Map<String, Long> countByLatitudeCircle() {
         return listAll().stream()
-                .collect(groupingBy(Runway::getLatitudeCircle, counting()));
+                .collect(groupingBy(Runway::getLatitude, counting()));
     }
 
 }

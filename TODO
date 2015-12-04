@@ -1,5 +1,3 @@
 - cyclic menu
 - tests
-- clean unused
-    - runway: lighted, closed, lat, lng
 - extract fuzzy find logic

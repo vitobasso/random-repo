@@ -6,7 +6,6 @@ import com.lunatech.assessment.model.Airport;
 import com.lunatech.assessment.model.Country;
 import com.lunatech.assessment.model.Runway;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,8 +22,7 @@ public class QueryService {
     @Inject private AirportService airportService;
     @Inject private RunwayService runwayService;
 
-    private static final String RUNWAY_ROW_FORMAT = "%8s %8s %10s %13s %13s\n";
-    private static final DecimalFormat COORDINATE_FORMAT = new DecimalFormat("###.#");
+    private static final String RUNWAY_ROW_FORMAT = "%8s %8s %10s %10s\n";
 
     public void query() {
         Optional<Country> country = findCountryForUserInput();
@@ -76,7 +74,7 @@ public class QueryService {
 
     private void printRunwayHeader() {
         System.out.println("Runways:");
-        System.out.printf(RUNWAY_ROW_FORMAT, "Length", "Width", "Surface", "Latitude", "Longitude");
+        System.out.printf(RUNWAY_ROW_FORMAT, "Length", "Width", "Latitude", "Surface");
     }
 
     private void printAirport(Airport airport) {
@@ -87,13 +85,8 @@ public class QueryService {
         System.out.printf(RUNWAY_ROW_FORMAT,
                 format(runway.getLength()),
                 format(runway.getWidth()),
-                format(runway.getSurface()),
-                formatCoordinate(runway.getLatitude()),
-                formatCoordinate(runway.getLongitude()));
-    }
-
-    private String formatCoordinate(Double coordinate) {
-        return coordinate != null? COORDINATE_FORMAT.format(coordinate.doubleValue()) : "";
+                format(runway.getLatitude()),
+                format(runway.getSurface()));
     }
 
 }

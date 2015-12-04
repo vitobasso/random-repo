@@ -19,11 +19,7 @@ public class RunwayReader extends EntityReader<Runway> {
         runway.setLength(record.getInt("length_ft"));
         runway.setWidth(record.getInt("width_ft"));
         runway.setSurface(record.get("surface"));
-        runway.setLatitudeCircle(record.get("le_ident"));
-        runway.setLighted(record.getBoolean("lighted"));
-        runway.setClosed(record.getBoolean("closed"));
-        runway.setLatitude(record.getDouble("le_latitude_deg"));
-        runway.setLongitude(record.getDouble("le_longitude_deg"));
+        runway.setLatitude(record.get("le_ident"));
         return runway;
     }
 
