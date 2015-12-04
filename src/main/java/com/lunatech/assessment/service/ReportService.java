@@ -32,6 +32,7 @@ public class ReportService {
     @Inject private RunwayService runwayService;
 
     public void report() {
+        System.out.println("(Should take about 10s...)");
         Report report = createReport();
         printReport(report);
     }
