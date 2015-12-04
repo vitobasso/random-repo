@@ -18,7 +18,7 @@ public class App {
         if ("1".equals(option)) {
             queryService.query();
         } else if ("2".equals(option)) {
-            reportService.printReport();
+            reportService.report();
         } else {
             System.out.println("Invalid option.");
         }

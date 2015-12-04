@@ -8,21 +8,13 @@ import java.util.Map;
 /**
  * Created by Victor on 02/12/2015.
  */
-public class ReportEntry {
+public class CountryReportEntry {
 
     private Country country;
     private Long airportCount;
     private List<String> surfaceTypes;
 
-    public ReportEntry() {
-    }
-
-    public ReportEntry(Country country, Long airportCount) {
-        this.country = country;
-        this.airportCount = airportCount;
-    }
-
-    public ReportEntry(Map.Entry<Country, Long> entry) {
+    public CountryReportEntry(Map.Entry<Country, Long> entry) {
         this.country = entry.getKey();
         this.airportCount = entry.getValue();
     }

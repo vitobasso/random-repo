@@ -4,15 +4,18 @@ import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 import com.lunatech.assessment.model.Airport;
 import com.lunatech.assessment.model.Country;
+import com.lunatech.assessment.model.report.CountryReportEntry;
+import com.lunatech.assessment.model.report.LatitudeReportEntry;
 import com.lunatech.assessment.model.report.Report;
-import com.lunatech.assessment.model.report.ReportEntry;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.google.common.collect.Lists.reverse;
+import static com.lunatech.assessment.util.Lang.getFirstElements;
+import static com.lunatech.assessment.util.Lang.getLastElements;
+import static java.util.Collections.reverseOrder;
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.concat;
 
@@ -21,49 +24,43 @@ import static java.util.stream.Stream.concat;
  */
 public class ReportService {
 
-    public static final int REPORT_RESULTS_COUNT = 10;
+    public static final int ENTRIES_COUNT = 10;
 
     @Inject private AirportService airportService;
     @Inject private RunwayService runwayService;
 
-    public void printReport() {
+    public void report() {
         Report report = createReport();
-        print(report);
+        printReport(report);
     }
 
-    public Report createReport() {
+    private Report createReport() {
         Report report = new Report();
+
         selectCountriesByAirportCount(report);
-        setSurfaceTypesForReport(report);
+        setSurfaceTypesForCountries(report);
+
+        report.setCommonLatitudes(getLatitudeEntries());
+
         return report;
     }
 
     private void selectCountriesByAirportCount(Report report) {
+        List<CountryReportEntry> countryEntries = getCountryEntries();
+        report.setBottomCountries(getFirstElements(countryEntries, ENTRIES_COUNT));
+        report.setTopCoutries(getLastElements(countryEntries, ENTRIES_COUNT));
+    }
+
+    private List<CountryReportEntry> getCountryEntries() {
         Map<Country, Long> airportCountByCountry = airportService.countByCountry();
-        List<ReportEntry> sortedEntries = getCountsSortedByValue(airportCountByCountry);
-
-        report.setBottomCountries(getBottomResults(sortedEntries));
-        report.setTopCoutries(getTopResults(sortedEntries));
-    }
-
-    private List<ReportEntry> getBottomResults(List<ReportEntry> sortedEntries) {
-        return sortedEntries.subList(0, REPORT_RESULTS_COUNT);
-    }
-
-    private List<ReportEntry> getTopResults(List<ReportEntry> sortedEntries) {
-        return reverse(sortedEntries).subList(0, REPORT_RESULTS_COUNT);
-    }
-
-    private List<ReportEntry> getCountsSortedByValue(Map<Country, Long> airportCountByCountry) {
-        Comparator<ReportEntry> byCount = (left, right) -> Long.compare(left.getAirportCount(), right.getAirportCount());
         return airportCountByCountry.entrySet().stream()
-                .map(ReportEntry::new)
-                .sorted(byCount)
+                .map(CountryReportEntry::new)
+                .sorted(comparing(CountryReportEntry::getAirportCount))
                 .collect(toList());
     }
 
-    private void setSurfaceTypesForReport(Report report) {
-        Stream<ReportEntry> allEntries = concat(report.getBottomCountries().stream(),
+    private void setSurfaceTypesForCountries(Report report) {
+        Stream<CountryReportEntry> allEntries = concat(report.getBottomCountries().stream(),
                                                 report.getTopCoutries().stream());
         allEntries.forEach(entry ->
                 entry.setSurfaceTypes(getSurfaceTypesForCountry(entry.getCountry())));
@@ -77,21 +74,38 @@ public class ReportService {
                 .collect(toList());
     }
 
-    public void print(Report report) {
+    private List<LatitudeReportEntry> getLatitudeEntries() {
+        Map<String, Long> latitudeCounts = runwayService.countByLatitudeCircle();
+        return latitudeCounts.entrySet().stream()
+                .map(LatitudeReportEntry::new)
+                .sorted(reverseOrder(comparing(LatitudeReportEntry::getCount)))
+                .limit(ENTRIES_COUNT)
+                .collect(toList());
+    }
+
+    private void printReport(Report report) {
         System.out.println("\nCountries with the most airports:");
         report.getTopCoutries()
-                .forEach(this::printEntry);
+                .forEach(this::printCountryEntry);
 
         System.out.println("\nCountries with the least airports:");
         report.getBottomCountries()
-                .forEach(this::printEntry);
+                .forEach(this::printCountryEntry);
+
+        System.out.println("\nMost common runway latitudes:");
+        report.getCommonLatitudes()
+                .forEach(this::printLatitudeEntry);
     }
 
-    private void printEntry(ReportEntry reportEntry) {
-        String countryName = reportEntry.getCountry().getName();
-        Long airportCount = reportEntry.getAirportCount();
-        String surfacesStr = Joiner.on(", ").join(reportEntry.getSurfaceTypes());
+    private void printCountryEntry(CountryReportEntry entry) {
+        String countryName = entry.getCountry().getName();
+        Long airportCount = entry.getAirportCount();
+        String surfacesStr = Joiner.on(", ").join(entry.getSurfaceTypes());
         System.out.printf("%30s %6d   %s\n", countryName, airportCount, surfacesStr);
+    }
+
+    private void printLatitudeEntry(LatitudeReportEntry entry) {
+        System.out.printf("%5s %6d\n", entry.getLatitudeId(), entry.getCount());
     }
 
 }

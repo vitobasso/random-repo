@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 /**
  * Created by Victor on 02/12/2015.
@@ -52,6 +51,11 @@ public class RunwayService extends EntityService<Runway> {
         return findByAirport(airport).stream()
                 .map(Runway::getSurface)
                 .collect(toList());
+    }
+
+    public Map<String, Long> countByLatitudeCircle() {
+        return listAll().stream()
+                .collect(groupingBy(Runway::getLatitudeCircle, counting()));
     }
 
 }

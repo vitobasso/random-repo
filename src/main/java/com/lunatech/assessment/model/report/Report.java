@@ -7,23 +7,31 @@ import java.util.List;
  */
 public class Report {
 
-    private List<ReportEntry> topCoutries;
-    private List<ReportEntry> bottomCountries;
+    private List<CountryReportEntry> topCoutries;
+    private List<CountryReportEntry> bottomCountries;
+    private List<LatitudeReportEntry> commonLatitudes;
 
-    public List<ReportEntry> getTopCoutries() {
+    public List<CountryReportEntry> getTopCoutries() {
         return topCoutries;
     }
 
-    public void setTopCoutries(List<ReportEntry> topCoutries) {
+    public void setTopCoutries(List<CountryReportEntry> topCoutries) {
         this.topCoutries = topCoutries;
     }
 
-    public List<ReportEntry> getBottomCountries() {
+    public List<CountryReportEntry> getBottomCountries() {
         return bottomCountries;
     }
 
-    public void setBottomCountries(List<ReportEntry> bottomCountries) {
+    public void setBottomCountries(List<CountryReportEntry> bottomCountries) {
         this.bottomCountries = bottomCountries;
     }
 
+    public List<LatitudeReportEntry> getCommonLatitudes() {
+        return commonLatitudes;
+    }
+
+    public void setCommonLatitudes(List<LatitudeReportEntry> commonLatitudes) {
+        this.commonLatitudes = commonLatitudes;
+    }
 }

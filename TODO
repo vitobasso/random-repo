@@ -1,3 +1,5 @@
-- top 10 most common runway latitude
 - cyclic menu
 - tests
+- clean unused
+    - runway: lighted, closed, lat, lng
+- extract fuzzy find logic
