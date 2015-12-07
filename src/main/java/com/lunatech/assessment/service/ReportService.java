@@ -26,12 +26,20 @@ import static java.util.stream.Stream.concat;
  */
 public class ReportService {
 
-    public static final int ENTRIES_COUNT = 10;
+    public final int ENTRIES_COUNT;
     public static final String COUNTRY_ROW_FORMAT = "%30s %15s   %s\n";
     public static final String LATITUDE_ROW_FORMAT = "%30s %15s\n";
 
     @Inject private AirportService airportService;
     @Inject private RunwayService runwayService;
+
+    public ReportService() {
+        ENTRIES_COUNT = 10;
+    }
+
+    public ReportService(int numberOfResults) {
+        ENTRIES_COUNT = numberOfResults;
+    }
 
     public void report() {
         System.out.println("Takes a while... (about 10s)");
@@ -39,7 +47,7 @@ public class ReportService {
         printReport(report);
     }
 
-    private Report createReport() {
+    public Report createReport() {
         Report report = new Report();
 
         selectCountriesByAirportCount(report);
