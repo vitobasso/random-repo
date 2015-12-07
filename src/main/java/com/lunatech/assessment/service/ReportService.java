@@ -27,12 +27,14 @@ import static java.util.stream.Stream.concat;
 public class ReportService {
 
     public static final int ENTRIES_COUNT = 10;
+    public static final String COUNTRY_ROW_FORMAT = "%30s %15s   %s\n";
+    public static final String LATITUDE_ROW_FORMAT = "%30s %15s\n";
 
     @Inject private AirportService airportService;
     @Inject private RunwayService runwayService;
 
     public void report() {
-        System.out.println("(Should take about 10s...)");
+        System.out.println("Takes a while... (about 10s)");
         Report report = createReport();
         printReport(report);
     }
@@ -64,7 +66,7 @@ public class ReportService {
 
     private void setSurfaceTypesForCountries(Report report) {
         Stream<CountryReportEntry> allEntries = concat(report.getBottomCountries().stream(),
-                                                report.getTopCoutries().stream());
+                report.getTopCoutries().stream());
         allEntries.forEach(entry ->
                 entry.setSurfaceTypes(getSurfaceTypesForCountry(entry.getCountry())));
     }
@@ -87,28 +89,40 @@ public class ReportService {
     }
 
     private void printReport(Report report) {
-        System.out.println("\nCountries with the most airports:");
+        System.out.println("\n\nCountries with the most airports:\n");
+        printCountryHeader();
         report.getTopCoutries()
                 .forEach(this::printCountryEntry);
 
-        System.out.println("\nCountries with the least airports:");
+        System.out.println("\n\nCountries with the least airports:\n");
+        printCountryHeader();
         report.getBottomCountries()
                 .forEach(this::printCountryEntry);
 
-        System.out.println("\nMost common runway latitudes:");
+        System.out.println("\n\nMost common runway latitudes:\n");
+        printLatitudeHeader();
         report.getCommonLatitudes()
                 .forEach(this::printLatitudeEntry);
     }
 
+    private void printCountryHeader() {
+        System.out.printf(COUNTRY_ROW_FORMAT, "Country", "Airport count", "Types of runways");
+    }
+
+    private void printLatitudeHeader() {
+        System.out.printf(LATITUDE_ROW_FORMAT, "Latitude", "Runway count");
+    }
+
     private void printCountryEntry(CountryReportEntry entry) {
         String countryName = entry.getCountry().getName();
-        Long airportCount = entry.getAirportCount();
+        String airportCount = String.format("%6d", entry.getAirportCount());
         String surfacesStr = Joiner.on(", ").join(entry.getSurfaceTypes());
-        System.out.printf("%30s %6d   %s\n", countryName, airportCount, surfacesStr);
+        System.out.printf(COUNTRY_ROW_FORMAT, countryName, airportCount, surfacesStr);
     }
 
     private void printLatitudeEntry(LatitudeReportEntry entry) {
-        System.out.printf("%5s %6d\n", entry.getLatitudeId(), entry.getCount());
+        String count = String.format("%6d", entry.getCount());
+        System.out.printf(LATITUDE_ROW_FORMAT, entry.getLatitudeId(), count);
     }
 
 }
