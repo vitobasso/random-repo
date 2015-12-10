@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.*;
 /**
  * Created by Victor on 02/12/2015.
  */
-public class AirportService extends EntityService<Airport> {
+public class AirportService extends ChildEntityService<Airport> {
 
     @Inject private CountryService countryService;
 
@@ -26,6 +26,11 @@ public class AirportService extends EntityService<Airport> {
     @Override
     protected String getId(Airport entity) {
         return entity.getId();
+    }
+
+    @Override
+    protected String getParentId(Airport entity) {
+        return entity.getCountryCode();
     }
 
     public List<Airport> findByCountry(Country country) {

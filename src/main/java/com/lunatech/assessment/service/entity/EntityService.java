@@ -22,24 +22,24 @@ public abstract class EntityService<T> {
     }
 
     public List<T> listAll() {
-        if (entities == null) {
-            loadEntities(reader);
-        }
+        lazyLoad();
         return entities;
     }
 
-    public T getById(String key) {
-        if (mapById == null) {
-            loadEntities(reader);
-        }
-        return mapById.get(key);
+    public T getById(String id) {
+        lazyLoad();
+        return mapById.get(id);
     }
 
     protected Map<String, T> getMapById() {
-        if (mapById == null) {
+        lazyLoad();
+        return mapById;
+    }
+
+    private void lazyLoad() {
+        if (entities == null) {
             loadEntities(reader);
         }
-        return mapById;
     }
 
     protected void loadEntities(EntityReader<T> reader) {

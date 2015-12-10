@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.*;
 /**
  * Created by Victor on 02/12/2015.
  */
-public class RunwayService extends EntityService<Runway> {
+public class RunwayService extends ChildEntityService<Runway> {
 
     @Inject
     public RunwayService(RunwayReader reader) {
@@ -24,6 +24,11 @@ public class RunwayService extends EntityService<Runway> {
     @Override
     protected String getId(Runway entity) {
         return entity.getId();
+    }
+
+    @Override
+    protected String getParentId(Runway entity) {
+        return entity.getAirportRef();
     }
 
     public Map<String, List<Runway>> groupByAirport(List<Airport> airports) {
