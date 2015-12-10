@@ -3,10 +3,15 @@ package com.lunatech.assessment.model;
 /**
  * Created by Victor on 01/12/2015.
  */
-public class Country {
+public class Country implements Entity {
 
     private String code;
     private String name;
+
+    @Override
+    public String getId() {
+        return getCode();
+    }
 
     public String getCode() {
         return code;

@@ -21,14 +21,9 @@ public class CountryService extends EntityService<Country> {
         fuzzyFinder = new FuzzyFinder<>(this::listAll, Country::getCode, Country::getName);
     }
 
-    @Override
-    protected String getId(Country entity) {
-        return entity.getCode();
-    }
-
     public Optional<Country> find(String searchTerm) {
         Predicate<Country> matchesSearch = country -> country.getCode().equalsIgnoreCase(searchTerm)
-                                        || country.getName().equalsIgnoreCase(searchTerm);
+                                                   || country.getName().equalsIgnoreCase(searchTerm);
         return listAll().stream()
                 .filter(matchesSearch)
                 .findFirst();

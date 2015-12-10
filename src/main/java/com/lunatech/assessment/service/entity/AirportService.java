@@ -21,16 +21,6 @@ public class AirportService extends ChildEntityService<Airport> {
         super(reader);
     }
 
-    @Override
-    protected String getId(Airport entity) {
-        return entity.getId();
-    }
-
-    @Override
-    protected String getParentId(Airport entity) {
-        return entity.getCountryCode();
-    }
-
     public List<Airport> findByCountry(Country country) {
         return getByParentId(country.getCode());
     }

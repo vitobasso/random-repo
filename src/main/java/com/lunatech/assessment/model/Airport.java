@@ -3,12 +3,18 @@ package com.lunatech.assessment.model;
 /**
  * Created by Victor on 01/12/2015.
  */
-public class Airport {
+public class Airport implements ChildEntity {
 
     private String id;
     private String name;
     private String countryCode;
 
+    @Override
+    public String getParentId() {
+        return getCountryCode();
+    }
+
+    @Override
     public String getId() {
         return id;
     }

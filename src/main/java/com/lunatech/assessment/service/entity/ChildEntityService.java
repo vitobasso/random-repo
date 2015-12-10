@@ -1,5 +1,6 @@
 package com.lunatech.assessment.service.entity;
 
+import com.lunatech.assessment.model.ChildEntity;
 import com.lunatech.assessment.reader.EntityReader;
 
 import java.util.Collections;
@@ -11,7 +12,7 @@ import static java.util.stream.Collectors.groupingBy;
 /**
  * Created by Victor on 10/12/2015.
  */
-public abstract class ChildEntityService<T> extends EntityService<T> {
+public abstract class ChildEntityService<T extends ChildEntity> extends EntityService<T> {
 
     protected Map<String, List<T>> mapByParentId;
 
@@ -33,9 +34,7 @@ public abstract class ChildEntityService<T> extends EntityService<T> {
 
     private Map<String, List<T>> createMapByParentId(List<T> entities) {
         return entities.stream()
-                .collect(groupingBy(this::getParentId));
+                .collect(groupingBy(T::getParentId));
     }
-
-    protected abstract String getParentId(T entity);
 
 }

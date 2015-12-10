@@ -3,7 +3,7 @@ package com.lunatech.assessment.model;
 /**
  * Created by Victor on 01/12/2015.
  */
-public class Runway {
+public class Runway implements ChildEntity {
 
     private String id;
     private String airportRef;
@@ -12,6 +12,12 @@ public class Runway {
     private String surface;
     private String latitude;
 
+    @Override
+    public String getParentId() {
+        return getAirportRef();
+    }
+
+    @Override
     public String getId() {
         return id;
     }
@@ -59,5 +65,4 @@ public class Runway {
     public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
-
 }

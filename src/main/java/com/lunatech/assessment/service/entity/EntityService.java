@@ -1,5 +1,6 @@
 package com.lunatech.assessment.service.entity;
 
+import com.lunatech.assessment.model.Entity;
 import com.lunatech.assessment.reader.EntityReader;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ import static java.util.stream.Collectors.toMap;
 /**
  * Created by Victor on 02/12/2015.
  */
-public abstract class EntityService<T> {
+public abstract class EntityService<T extends Entity> {
 
     protected List<T> entities;
     protected Map<String, T> mapById;
@@ -48,9 +49,7 @@ public abstract class EntityService<T> {
 
     private Map<String, T> createMapById(List<T> entities) {
         return entities.stream()
-                .collect(toMap(this::getId, x -> x));
+                .collect(toMap(T::getId, x -> x));
     }
-
-    protected abstract String getId(T entity);
 
 }

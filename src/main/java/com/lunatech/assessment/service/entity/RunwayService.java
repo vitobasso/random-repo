@@ -20,23 +20,13 @@ public class RunwayService extends ChildEntityService<Runway> {
         super(reader);
     }
 
-    @Override
-    protected String getId(Runway entity) {
-        return entity.getId();
-    }
-
-    @Override
-    protected String getParentId(Runway entity) {
-        return entity.getAirportRef();
+    public List<Runway> findByAirport(Airport airport) {
+        return getByParentId(airport.getId());
     }
 
     public Map<String, List<Runway>> groupByAirport(List<Airport> airports) {
         return airports.stream()
                 .collect(toMap(Airport::getId, this::findByAirport));
-    }
-
-    public List<Runway> findByAirport(Airport airport) {
-        return getByParentId(airport.getId());
     }
 
     public List<String> getRunwaySurfaceTypes(Airport airport) {
