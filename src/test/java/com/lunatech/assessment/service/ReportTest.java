@@ -7,6 +7,7 @@ import com.lunatech.assessment.model.Country;
 import com.lunatech.assessment.model.report.CountryReportEntry;
 import com.lunatech.assessment.model.report.Report;
 import com.lunatech.assessment.service.entity.AirportService;
+import com.lunatech.assessment.service.entity.CountryService;
 import com.lunatech.assessment.service.entity.RunwayService;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,11 +33,9 @@ public class ReportTest {
     @InjectMocks
     private ReportService reportService =  new ReportService(1);
 
-    @Mock
-    private AirportService airportService;
-
-    @Mock
-    private RunwayService runwayService;
+    @Mock private CountryService countryService;
+    @Mock private AirportService airportService;
+    @Mock private RunwayService runwayService;
 
     private Country brazil, netherlands, england;
     private Airport pintoMartins, schiphol, guarulhos, heathrow, gatwick, stansted;
@@ -61,11 +60,15 @@ public class ReportTest {
         when(airportService.findByCountry(brazil)).thenReturn(brAirports);
         when(airportService.findByCountry(england)).thenReturn(ukAirports);
 
-        Map<Country, Long> counts = new HashMap<>();
-        counts.put(netherlands, (long) nlAirports.size());
-        counts.put(brazil, (long) brAirports.size());
-        counts.put(england, (long) ukAirports.size());
-        when(airportService.countByCountry()).thenReturn(counts);
+        Map<String, Long> counts = new HashMap<>();
+        counts.put(netherlands.getCode(), (long) nlAirports.size());
+        counts.put(brazil.getCode(), (long) brAirports.size());
+        counts.put(england.getCode(), (long) ukAirports.size());
+        when(airportService.countByCountryCode()).thenReturn(counts);
+
+        when(countryService.getById("NL")).thenReturn(netherlands);
+        when(countryService.getById("BR")).thenReturn(brazil);
+        when(countryService.getById("UK")).thenReturn(england);
 
         when(runwayService.countByLatitudeCircle()).thenReturn(Maps.newHashMap());
         when(runwayService.getRunwaySurfaceTypes(Mockito.any(Airport.class))).thenReturn(Lists.newArrayList());

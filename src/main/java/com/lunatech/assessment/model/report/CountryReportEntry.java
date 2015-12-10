@@ -3,7 +3,6 @@ package com.lunatech.assessment.model.report;
 import com.lunatech.assessment.model.Country;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Victor on 02/12/2015.
@@ -14,9 +13,9 @@ public class CountryReportEntry {
     private Long airportCount;
     private List<String> surfaceTypes;
 
-    public CountryReportEntry(Map.Entry<Country, Long> entry) {
-        this.country = entry.getKey();
-        this.airportCount = entry.getValue();
+    public CountryReportEntry(Country country, Long count) {
+        this.country = country;
+        this.airportCount = count;
     }
 
     public Country getCountry() {

@@ -31,11 +31,6 @@ public abstract class EntityService<T> {
         return mapById.get(id);
     }
 
-    protected Map<String, T> getMapById() {
-        lazyLoad();
-        return mapById;
-    }
-
     private void lazyLoad() {
         if (entities == null) {
             loadEntities(reader);

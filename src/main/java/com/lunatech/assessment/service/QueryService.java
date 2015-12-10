@@ -63,7 +63,7 @@ public class QueryService {
     }
 
     private void printRunways(List<Runway> runwaysInAirport) {
-        if (runwaysInAirport != null) {
+        if (runwaysInAirport != null && !runwaysInAirport.isEmpty()) {
             printRunwayHeader();
             runwaysInAirport.forEach(this::printRunway);
         }

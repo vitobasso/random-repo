@@ -2,6 +2,7 @@ package com.lunatech.assessment.service.entity;
 
 import com.lunatech.assessment.reader.EntityReader;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -19,17 +20,22 @@ public abstract class ChildEntityService<T> extends EntityService<T> {
     }
 
     public List<T> getByParentId(String parentId) {
+        lazyLoad();
+        List<T> children = mapByParentId.get(parentId);
+        return children != null ? children : Collections.<T>emptyList();
+    }
+
+    private void lazyLoad() {
         if (mapByParentId == null) {
             mapByParentId = createMapByParentId(listAll());
         }
-        return mapByParentId.get(parentId);
     }
 
     private Map<String, List<T>> createMapByParentId(List<T> entities) {
         return entities.stream()
                 .collect(groupingBy(this::getParentId));
     }
-    
+
     protected abstract String getParentId(T entity);
 
 }

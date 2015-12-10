@@ -5,11 +5,8 @@ import com.lunatech.assessment.model.Country;
 import com.lunatech.assessment.reader.CountryReader;
 import com.lunatech.assessment.util.FuzzyFinder;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
-
-import static java.util.stream.Collectors.toMap;
 
 /**
  * Created by Victor on 02/12/2015.
@@ -39,15 +36,6 @@ public class CountryService extends EntityService<Country> {
 
     public Optional<Country> findFuzzy(String searchTerm) {
         return fuzzyFinder.find(searchTerm);
-    }
-
-    public <T> Map<Country, T> convertToMapByCountry(Map<String, T> mapByCode) {
-        Map<String, Country> countriesByCode = getMapById();
-        return mapByCode.entrySet().stream()
-                .collect(toMap(
-                        entry -> countriesByCode.get(entry.getKey()),
-                        Map.Entry::getValue
-                ));
     }
 
 }

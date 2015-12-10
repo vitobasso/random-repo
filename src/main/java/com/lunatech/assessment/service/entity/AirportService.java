@@ -7,16 +7,14 @@ import com.lunatech.assessment.reader.AirportReader;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
 
 /**
  * Created by Victor on 02/12/2015.
  */
 public class AirportService extends ChildEntityService<Airport> {
-
-    @Inject private CountryService countryService;
 
     @Inject
     public AirportService(AirportReader reader) {
@@ -34,10 +32,7 @@ public class AirportService extends ChildEntityService<Airport> {
     }
 
     public List<Airport> findByCountry(Country country) {
-        Predicate<Airport> matchesCountryCode = airport -> airport.getCountryCode().equalsIgnoreCase(country.getCode());
-        return listAll().stream()
-                .filter(matchesCountryCode)
-                .collect(toList());
+        return getByParentId(country.getCode());
     }
 
     public Map<String, Long> countByCountryCode() {
@@ -45,7 +40,4 @@ public class AirportService extends ChildEntityService<Airport> {
                 .collect(groupingBy(Airport::getCountryCode, counting()));
     }
 
-    public Map<Country, Long> countByCountry() {
-        return countryService.convertToMapByCountry(countByCountryCode());
-    }
 }

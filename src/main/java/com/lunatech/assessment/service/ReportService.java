@@ -8,6 +8,7 @@ import com.lunatech.assessment.model.report.CountryReportEntry;
 import com.lunatech.assessment.model.report.LatitudeReportEntry;
 import com.lunatech.assessment.model.report.Report;
 import com.lunatech.assessment.service.entity.AirportService;
+import com.lunatech.assessment.service.entity.CountryService;
 import com.lunatech.assessment.service.entity.RunwayService;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class ReportService {
     public static final String LATITUDE_ROW_FORMAT = "%30s %15s\n";
 
     @Inject private AirportService airportService;
+    @Inject private CountryService countryService;
     @Inject private RunwayService runwayService;
 
     public ReportService() {
@@ -42,7 +44,6 @@ public class ReportService {
     }
 
     public void report() {
-        System.out.println("Takes a while... (about 10s)");
         Report report = createReport();
         printReport(report);
     }
@@ -65,11 +66,16 @@ public class ReportService {
     }
 
     private List<CountryReportEntry> getCountryEntries() {
-        Map<Country, Long> airportCountByCountry = airportService.countByCountry();
+        Map<String, Long> airportCountByCountry = airportService.countByCountryCode();
         return airportCountByCountry.entrySet().stream()
-                .map(CountryReportEntry::new)
+                .map(this::createCountryReportEntry)
                 .sorted(comparing(CountryReportEntry::getAirportCount))
                 .collect(toList());
+    }
+
+    private CountryReportEntry createCountryReportEntry(Map.Entry<String, Long> entry) {
+        Country country = countryService.getById(entry.getKey());
+        return new CountryReportEntry(country, entry.getValue());
     }
 
     private void setSurfaceTypesForCountries(Report report) {
@@ -81,7 +87,7 @@ public class ReportService {
 
     private List<String> getSurfaceTypesForCountry(Country country) {
         List<Airport> airports = airportService.findByCountry(country);
-        return airports.parallelStream()
+        return airports.stream()
                 .flatMap(airport -> runwayService.getRunwaySurfaceTypes(airport).stream())
                 .distinct()
                 .collect(toList());

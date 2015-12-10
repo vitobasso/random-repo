@@ -7,7 +7,6 @@ import com.lunatech.assessment.reader.RunwayReader;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.*;
 
@@ -32,29 +31,12 @@ public class RunwayService extends ChildEntityService<Runway> {
     }
 
     public Map<String, List<Runway>> groupByAirport(List<Airport> airports) {
-        return listAll().parallelStream()
-                .filter(matchesAirports(airports))
-                .collect(groupingBy(Runway::getAirportRef));
-    }
-
-    private Predicate<Runway> matchesAirports(List<Airport> airports) {
-        return runway -> airports.stream()
-                .filter(hasRunway(runway))
-                .count() > 0;
-    }
-
-    private Predicate<Airport> hasRunway(Runway runway) {
-        return airport -> airport.getId().equals(runway.getAirportRef());
+        return airports.stream()
+                .collect(toMap(Airport::getId, this::findByAirport));
     }
 
     public List<Runway> findByAirport(Airport airport) {
-        return listAll().parallelStream()
-                .filter(belongsToAirport(airport))
-                .collect(toList());
-    }
-
-    private Predicate<Runway> belongsToAirport(Airport airport) {
-        return runway -> airport.getId().equals(runway.getAirportRef());
+        return getByParentId(airport.getId());
     }
 
     public List<String> getRunwaySurfaceTypes(Airport airport) {
