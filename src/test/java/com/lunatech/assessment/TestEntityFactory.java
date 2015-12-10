@@ -17,6 +17,7 @@ public class TestEntityFactory {
 
     public static Airport createAirport(String name, String countryCode) {
         Airport airport = new Airport();
+        airport.setId(countryCode + "-" + name);
         airport.setName(name);
         airport.setCountryCode(countryCode);
         return airport;

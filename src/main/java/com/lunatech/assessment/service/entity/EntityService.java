@@ -3,8 +3,10 @@ package com.lunatech.assessment.service.entity;
 import com.lunatech.assessment.reader.EntityReader;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.toMap;
 
 /**
  * Created by Victor on 02/12/2015.
@@ -12,6 +14,7 @@ import java.util.List;
 public abstract class EntityService<T> {
 
     protected List<T> entities;
+    protected Map<String, T> mapById;
     protected final EntityReader<T> reader;
 
     protected EntityService(EntityReader<T> reader) {
@@ -20,18 +23,39 @@ public abstract class EntityService<T> {
 
     public List<T> listAll() {
         if (entities == null) {
-            entities = loadEntities(reader);
+            loadEntities(reader);
         }
         return entities;
     }
 
-    protected List<T> loadEntities(EntityReader<T> reader) {
+    public T getById(String key) {
+        if (mapById == null) {
+            loadEntities(reader);
+        }
+        return mapById.get(key);
+    }
+
+    protected Map<String, T> getMapById() {
+        if (mapById == null) {
+            loadEntities(reader);
+        }
+        return mapById;
+    }
+
+    protected void loadEntities(EntityReader<T> reader) {
         try {
-            return reader.read();
+            entities = reader.read();
+            mapById = createMapById(entities);
         } catch (IOException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
+            throw new RuntimeException(e);
         }
     }
+
+    private Map<String, T> createMapById(List<T> entities) {
+        return entities.stream()
+                .collect(toMap(this::getId, x -> x));
+    }
+
+    protected abstract String getId(T entity);
 
 }

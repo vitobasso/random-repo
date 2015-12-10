@@ -8,7 +8,6 @@ import com.lunatech.assessment.util.FuzzyFinder;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -25,6 +24,11 @@ public class CountryService extends EntityService<Country> {
         fuzzyFinder = new FuzzyFinder<>(this::listAll, Country::getCode, Country::getName);
     }
 
+    @Override
+    protected String getId(Country entity) {
+        return entity.getCode();
+    }
+
     public Optional<Country> find(String searchTerm) {
         Predicate<Country> matchesSearch = country -> country.getCode().equalsIgnoreCase(searchTerm)
                                         || country.getName().equalsIgnoreCase(searchTerm);
@@ -38,17 +42,12 @@ public class CountryService extends EntityService<Country> {
     }
 
     public <T> Map<Country, T> convertToMapByCountry(Map<String, T> mapByCode) {
-        Map<String, Country> countriesByCode = getCountriesByCode();
+        Map<String, Country> countriesByCode = getMapById();
         return mapByCode.entrySet().stream()
                 .collect(toMap(
                         entry -> countriesByCode.get(entry.getKey()),
                         Map.Entry::getValue
                 ));
-    }
-
-    private Map<String, Country> getCountriesByCode() {
-        return listAll().stream()
-                .collect(Collectors.toMap(Country::getCode, x -> x));
     }
 
 }

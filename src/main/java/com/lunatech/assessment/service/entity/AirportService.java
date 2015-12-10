@@ -23,6 +23,11 @@ public class AirportService extends EntityService<Airport> {
         super(reader);
     }
 
+    @Override
+    protected String getId(Airport entity) {
+        return entity.getId();
+    }
+
     public List<Airport> findByCountry(Country country) {
         Predicate<Airport> matchesCountryCode = airport -> airport.getCountryCode().equalsIgnoreCase(country.getCode());
         return listAll().stream()
@@ -38,5 +43,4 @@ public class AirportService extends EntityService<Airport> {
     public Map<Country, Long> countByCountry() {
         return countryService.convertToMapByCountry(countByCountryCode());
     }
-
 }

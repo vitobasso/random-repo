@@ -21,6 +21,11 @@ public class RunwayService extends EntityService<Runway> {
         super(reader);
     }
 
+    @Override
+    protected String getId(Runway entity) {
+        return entity.getId();
+    }
+
     public Map<String, List<Runway>> groupByAirport(List<Airport> airports) {
         return listAll().parallelStream()
                 .filter(matchesAirports(airports))
